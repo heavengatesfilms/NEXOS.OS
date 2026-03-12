@@ -1,0 +1,164 @@
+// ============================================================
+//  NEXUS OS — Waybar Configuration
+//  ~/.config/waybar/config.jsonc
+// ============================================================
+{
+  "layer": "top",
+  "position": "top",
+  "height": 36,
+  "spacing": 4,
+  "margin-top": 6,
+  "margin-left": 10,
+  "margin-right": 10,
+
+  "modules-left": [
+    "custom/nexus",
+    "hyprland/workspaces",
+    "hyprland/window"
+  ],
+
+  "modules-center": [
+    "clock"
+  ],
+
+  "modules-right": [
+    "custom/media",
+    "network",
+    "bluetooth",
+    "pulseaudio",
+    "battery",
+    "cpu",
+    "memory",
+    "tray",
+    "custom/power"
+  ],
+
+  // ── LEFT ──────────────────────────────────────────────────
+  "custom/nexus": {
+    "format": "󰙨 NEXUS",
+    "tooltip": false,
+    "on-click": "rofi -show drun -theme ~/.config/rofi/nexus.rasi"
+  },
+
+  "hyprland/workspaces": {
+    "format": "{icon}",
+    "on-click": "activate",
+    "format-icons": {
+      "1": "󰖟",
+      "2": "",
+      "3": "󱞁",
+      "4": "󰙯",
+      "5": "",
+      "urgent": "",
+      "active": "",
+      "default": ""
+    },
+    "sort-by-number": true,
+    "persistent-workspaces": {
+      "*": [1, 2, 3, 4, 5]
+    }
+  },
+
+  "hyprland/window": {
+    "max-length": 40,
+    "separate-outputs": true,
+    "rewrite": {
+      "(.*) — Mozilla Firefox": "󰈹 $1",
+      "(.*) — Brave": "󰒎 $1",
+      "(.*)Obsidian(.*)": "󱞁 $1"
+    }
+  },
+
+  // ── CENTER ────────────────────────────────────────────────
+  "clock": {
+    "format": "󰥔 {:%H:%M}",
+    "format-alt": "󰃭 {:%a %b %d, %Y}",
+    "tooltip-format": "<big>{:%B %Y}</big>\n<tt>{calendar}</tt>",
+    "calendar": {
+      "mode": "month",
+      "on-scroll": 1,
+      "format": {
+        "today": "<span color='#00c8f0'><b>{}</b></span>"
+      }
+    }
+  },
+
+  // ── RIGHT ─────────────────────────────────────────────────
+  "custom/media": {
+    "format": "󰎈 {}",
+    "max-length": 30,
+    "exec": "playerctl metadata --format '{{ artist }} - {{ title }}' 2>/dev/null || echo ''",
+    "interval": 2,
+    "on-click": "playerctl play-pause",
+    "escape": true
+  },
+
+  "network": {
+    "format-wifi": "󰤨 {signalStrength}%",
+    "format-ethernet": "󰈀 {ipaddr}",
+    "format-disconnected": "󰤭 offline",
+    "tooltip-format-wifi": "{essid} ({signalStrength}%) — {ipaddr}",
+    "tooltip-format-ethernet": "{ifname} — {ipaddr}",
+    "on-click": "nm-connection-editor",
+    "interval": 5
+  },
+
+  "bluetooth": {
+    "format": "󰂯",
+    "format-connected": "󰂱 {num_connections}",
+    "format-disabled": "󰂲",
+    "tooltip-format": "{controller_alias}\t{controller_address}",
+    "tooltip-format-connected": "{controller_alias}\n\n{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+    "on-click": "blueman-manager"
+  },
+
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-muted": "󰝟 muted",
+    "format-icons": {
+      "headphone": "󰋋",
+      "default": ["󰕿", "󰖀", "󰕾"]
+    },
+    "on-click": "pavucontrol",
+    "scroll-step": 2
+  },
+
+  "battery": {
+    "states": {
+      "good": 90,
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon} {capacity}%",
+    "format-charging": "󰂄 {capacity}%",
+    "format-plugged": "󰚥 {capacity}%",
+    "format-icons": ["󰂎","󰁺","󰁻","󰁼","󰁽","󰁾","󰁿","󰂀","󰂁","󰂂","󰁹"],
+    "tooltip-format": "{timeTo} — {power}W"
+  },
+
+  "cpu": {
+    "format": "󰘚 {usage}%",
+    "tooltip": true,
+    "interval": 2,
+    "on-click": "kitty --title float -e btop"
+  },
+
+  "memory": {
+    "format": "󰍛 {percentage}%",
+    "tooltip-format": "{used:0.1f}GB / {total:0.1f}GB",
+    "interval": 5,
+    "on-click": "kitty --title float -e btop"
+  },
+
+  "tray": {
+    "icon-size": 16,
+    "spacing": 8
+  },
+
+  "custom/power": {
+    "format": "⏻",
+    "tooltip": false,
+    "on-click": "rofi -show power-menu -modi power-menu:~/.config/rofi/power-menu.sh -theme ~/.config/rofi/nexus.rasi"
+  }
+}
